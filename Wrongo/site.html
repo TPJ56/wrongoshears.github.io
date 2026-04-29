@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>SAY THE WORD</title>
+
+  <style>
+    body {
+      background-color: black;
+      color: #8b0000;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-top: 100px;
+      font-size: 48px;
+      letter-spacing: 3px;
+    }
+
+    input {
+      margin-top: 40px;
+      padding: 15px;
+      font-size: 18px;
+      background: black;
+      border: 1px solid #8b0000;
+      color: #8b0000;
+      text-align: center;
+      width: 300px;
+    }
+
+    #response {
+      margin-top: 40px;
+      font-size: 20px;
+      min-height: 50px;
+    }
+
+    .glitch {
+      animation: glitch 1s infinite;
+    }
+
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px red; }
+      25% { text-shadow: -2px -2px white; }
+      50% { text-shadow: 2px -2px red; }
+      75% { text-shadow: -2px 2px white; }
+      100% { text-shadow: 2px 2px red; }
+    }
+
+    /* JUMPSCARE FLASH */
+    @keyframes jumpscareFlash {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      20% { opacity: 0; }
+      30% { opacity: 1; }
+      40% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* TREMER TELA */
+    @keyframes shake {
+      0% { transform: translate(0, 0); }
+      20% { transform: translate(-10px, 5px); }
+      40% { transform: translate(10px, -5px); }
+      60% { transform: translate(-8px, 4px); }
+      80% { transform: translate(8px, -4px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .shake {
+      animation: shake 0.6s;
+    }
+
+    /* IMAGEM JUMPSCARE */
+    #secretImage {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 999;
+    }
+
+    .jumpscare {
+      display: block !important;
+      animation: jumpscareFlash 0.6s ease-in-out;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1 class="glitch">SAY THE WORD! AND YOU BE FREE!</h1>
+
+  <input type="text" id="wordInput" placeholder="type here..." />
+
+  <div id="response"></div>
+
+  <!-- IMAGEM DO JUMPSCARE -->
+  <img id="secretImage" src="ringo.png.jpeg">
+
+   <script>
+    const responses = {
+      "wrongo": "...you found me.",
+      "help": "There is no help here.",
+      "sorry": "There's no point in apologizing. You only belittled me, I SHOULD HAVE BEEN THE BAND LEADER.",
+      "the pale king": "The king of all Dirthmounth, and he couldn't even take care of his own son? Anyway, I don't like talking about that era.",
+      "the radiance": "After I killed her, I lost my purpose; I'm not even an empty shell anymore, just emptiness itself, a uniform form without identity. Sometimes I feel she's still alive, and I like to think about that.",
+      "the void": "Made from the void to kill, destined for haunted haunting, formed by complete error",
+      "bill": "I don't know why you're talking about this random triangle, I mean, in 1736 I met him and he told me how to enter the Mirror Dimension...",
+      "ringo": "I liked you! I loved you! Admit it! I did exactly what you wanted! I'm not the monster here.",
+      "paul": "So cute, but so arrogant, he thought he was the leader. HAHAHA",
+      "john": "Out of all the members of that ridiculous boy band, you were the one I hated the most! Good thing I'll never see you again.",
+      "george": "My best friend... I didn't want to do that, but he left me no choice.",
+      "beatles": "I loved you all, I liked you very much, but for some reason you wanted to mistreat me...",
+      "1666": "Good times when I went to the macroscopic world..."
+    };
+
+    const input = document.getElementById("wordInput");
+    const responseDiv = document.getElementById("response");
+    const image = document.getElementById("secretImage");
+    const body = document.body;
+
+    input.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        const value = input.value.toLowerCase().trim();
+
+        let found = false;
+
+        for (let key in responses) {
+          if (value.includes(key)) {
+
+            responseDiv.innerText = responses[key];
+            found = true;
+
+            if (key === "ringo" || key === "wrongo") {
+              
+              // ativa jumpscare
+              image.classList.add("jumpscare");
+              body.classList.add("shake");
+
+              setTimeout(() => {
+                image.classList.remove("jumpscare");
+                body.classList.remove("shake");
+                image.style.display = "none";
+              }, 700);
+
+            } else {
+              image.classList.remove("jumpscare");
+              body.classList.remove("shake");
+              image.style.display = "none";
+            }
+
+            break;
+          }
+        }
+
+        if (!found) {
+          responseDiv.innerText = "...";
+        }
+
+        input.value = "";
+      }
+    });
+  </script>
+
+</body>
+</html>
